@@ -1,0 +1,12 @@
+apply_patches_db: false
+db_homes_config:
+  11203-base:
+    home: db1
+    version: 11.2.0.3
+    edition: EE
+    oracle_home: /u01/app/oracle/11.2.0.3/db1
+
+db_homes_installed:
+     - home: 11203-base
+       apply_patches: false
+       state: present
