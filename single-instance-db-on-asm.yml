@@ -21,14 +21,14 @@
    become: yes
    roles:
       - oraswdb-install
-      - oradb-manage-db
+#     - oradb-manage-db
 
- - name: Tweaks
-   become: yes
-   hosts: "{{ hostgroup }}"
-   roles:
-      - cxoracle
-      - orahost-logrotate
+# - name: Tweaks
+#   become: yes
+#   hosts: "{{ hostgroup }}"
+#   roles:
+#      - cxoracle
+#      - orahost-logrotate
 
 # - name: Database configuration (tablespaces, parameters etc)
 #   hosts: "{{ hostgroup }}"

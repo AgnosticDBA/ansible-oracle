@@ -36,7 +36,7 @@
   oracle_asm_init_dg: data
 
   oracle_databases:                                            # Dictionary describing the databases to be installed
-        - home: db1                                            # 'Last' directory in ORACLE_HOME path (e.g /u01/app/oracle/12.1.0.2/racdb)
+        - home: dbhome_1                                       # 'Last' directory in ORACLE_HOME path (e.g /u01/app/oracle/12.1.0.2/racdb)
           oracle_version_db: 11.2.0.3                          # Oracle versiono
           oracle_edition: EE                                   # The edition of database-server (EE,SE,SEONE)
           oracle_db_name: orcl                                 # Database name
@@ -48,10 +48,22 @@
           oracle_database_type: MULTIPURPOSE                   # MULTIPURPOSE|DATA_WAREHOUSING|OLTP
           redolog_size_in_mb: 100
           datafile_dest: '+DATA'
-          recoveryfile_dest: '+FRA'
+          recoveryfile_dest: '+RECO'
           state: present
 
   host_fs_layout:
+   - vgname: vgmigr
+     state: present
+     filesystem:
+       - {mntp: /migration, lvname: lvmigr, lvsize: 100%FREE, fstype: ext4}
+     disk:
+       - {device: /dev/xvdb, pvname: /dev/xvdb}
+   - vgname: vgarch
+     state: present
+     filesystem:
+       - {mntp: /archive, lvname: lvarch, lvsize: 100%FREE, fstype: ext4}
+     disk:
+       - {device: /dev/xvdc, pvname: /dev/xvdc}
    - vgname: vgora
      state: present
      filesystem:
@@ -76,12 +88,12 @@
         - {name: 'compatible.asm', value: "{{ oracle_install_version_gi }}"}
       disk:
         - {device: /dev/xvde, asmlabel: DATA01}
-    - diskgroup: fra
+    - diskgroup: reco
       properties:
         - {redundancy: external, ausize: 4}
       attributes:
         - {name: compatible.rdbms, value: 11.2.0.3.0}
         - {name: 'compatible.asm', value: "{{ oracle_install_version_gi }}"}
       disk:
-        - {device: /dev/xvdf, asmlabel: FRA01}
+        - {device: /dev/xvdf, asmlabel: RECO01}
 
